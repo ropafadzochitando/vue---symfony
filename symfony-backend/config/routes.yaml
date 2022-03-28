@@ -1,0 +1,26 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+
+api_login_check:
+  path: /api/login_check
+
+get_user:
+  path: /api/user
+  controller: App\Controller\RegistrationController:user
+  methods: [GET]
+
+gesdinet_jwt_refresh_token:
+  path: /api/token/refresh
+  controller: gesdinet.jwtrefreshtoken::refresh
+
+contact_list:
+  path: /api/contact
+  controller: App\Controller\ContactController:indexAction
+  methods: [GET]
+
+contact_create:
+  path: /api/contact/create
+  controller: App\Controller\ContactController:createAction
+  methods: [POST]

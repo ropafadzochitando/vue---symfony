@@ -36,17 +36,6 @@
       </li>
     </ul>
   </nav>
-  <!-- Header Starts -->
-  <section id="Banner" class="content-section">
-    <div class="container content-wrap text-center">
-      <h1>Dev Hub</h1>
-      <h3>
-        <em>All we do is program</em>
-      </h3>
-    </div>
-    <div class="overlay"></div>
-  </section>
-  <!-- Header Ends -->
 
   <section id="Contact" class="content-section">
     <div class="container">
@@ -65,7 +54,6 @@
             We have hit an obstacle try again!
           </p>
 
-          <!-- <form @submit.prevent="onSubmit"> -->
           <form @submit.prevent="contact">
             <div class="form-group">
               <input
@@ -131,13 +119,22 @@ export default {
       serverError: "",
       serverSuccess: "",
       errors: [],
+      reloadState:false,
     };
   },
   mounted() {
     this.user = localStorage.getItem("user");
+    this.reload()
+   // this.$router.go()	
+    
   },
 
   methods: {
+    reload(){
+      this.reloadState = true
+      //window.location.reload();
+
+    },
     logout() {
       localStorage.clear();
       return this.$router.push({ name: "Login" });
@@ -195,12 +192,12 @@ export default {
           let result = await apiClient.post(url, data, { headers });
 
           if (result.status == 200) {
-            this.serverSuccess="Thank you we have received your message"
+            this.serverSuccess = "Thank you we have received your message";
             this.errors = [];
             return this.$router.push({ name: "Index" });
           }
         } catch (error) {
-          return this.serverError="Error encountered";
+          return (this.serverError = "Error encountered");
         }
 
         return data;

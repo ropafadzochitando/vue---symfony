@@ -8,6 +8,7 @@
             <div class="card-body">
               <div class="block-heading">
                 <h2>Register</h2>
+                <a href="/" class="smooth-scroll">Back to home</a>
                  <div v-for="error in errors" :key="error">
                   <p class="text-danger">{{ error }}</p>
                 </div>
@@ -138,6 +139,18 @@ export default {
             return this.$router.push({ name: "Login" });
           }
         } catch (error) {
+           this.errors = [];
+          
+            if(error.response.status>=500){
+             this.errors.push("Server error has occured");
+
+          }
+           if(error.response.status>=400){
+  
+             this.errors.push(error.response.data.message);
+
+          }
+           
           return error;
         }
         return true;

@@ -20,7 +20,7 @@
         </li>
 
         <li class="nav-item">
-          <router-link class="nav-link" to="/">Home</router-link>
+          <a class="nav-link" href="/">Home</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0" @submit.prevent="searchData">

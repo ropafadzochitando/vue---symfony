@@ -8,6 +8,7 @@
             <div class="card-body">
               <div class="block-heading">
                 <h2>Login</h2>
+                <a href="/" class="smooth-scroll">Back to home</a>
                 <div v-for="error in errors" :key="error">
                   <p class="text-danger">{{ error }}</p>
                 </div>
@@ -37,7 +38,13 @@
                 <div class="submit-btn">
                   <button class="btn btn-primary" type="submit">Submit</button>
                 </div>
-                <router-link class="smooth-scroll"  to="/register">Register</router-link>
+                <div class="row">
+                  <div class="col-md-6">
+                    <router-link class="smooth-scroll" to="/register"
+                      >{{statusMessage}}</router-link
+                    >
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -56,9 +63,15 @@ export default {
       email: "",
       disabled: true,
       errors: [],
+      statusMessage:"Register"
     };
   },
   methods: {
+
+    reload(){
+      window.location.reload()
+
+    },
     validateEmail() {
       this.errors = [];
       if (
@@ -85,6 +98,7 @@ export default {
       }
     },
     async login() {
+      this.statusMessage = "Please wait"
       let emailCheck = this.validateEmail(this.email);
       let passwordCheck = this.validatePassword();
       const url = "/login_check";
@@ -103,22 +117,38 @@ export default {
           let result = await apiClient.post(url, data, { headers });
 
           if (result.status == 200) {
-             let content = result.data.token;
-             localStorage.setItem("user", JSON.stringify(data));
-             localStorage.setItem("token", JSON.stringify(content));
-             return this.$router.push({ name: "Content" });
+            this.statusMessage = "Register"
+            let content = result.data.token;
+            localStorage.setItem("user", JSON.stringify(data));
+            localStorage.setItem("token", JSON.stringify(content));
+            return this.$router.push({ name: "Content" });
           }
         } catch (error) {
+          this.statusMessage = "Register"
+          this.errors = [];
+     
+          
+            if(error.response.status>=500){
+             this.errors.push("Server error has occured");
+
+          }
+           if(error.response.status>=400){
+  
+             this.errors.push(error.response.data.message);
+
+          }
+
+          
           return error;
         }
         return true;
       } else {
         this.errors = [];
         this.errors.push("Invalid data received");
+        this.statusMessage = "Login"
         console.log(this.errors);
       }
     },
   },
 };
-
 </script>
